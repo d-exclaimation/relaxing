@@ -50,23 +50,28 @@ export const dashboard = async () => {
   }));
 
   return {
-    dash: dash.map(({ reviewings, reviewees, ...rest }) => ({
-      ...rest,
-      reviewings,
-      reviewees,
-      avg: {
-        reviewing:
-          reviewings
-            .filter(({ id }) => id !== rest.id)
-            .map(({ reviewee }) => reviewee)
-            .reduce((acc, x) => acc + x, 0) / reviewings.length,
-        reviewed:
-          reviewees
-            .filter(({ id }) => id !== rest.id)
-            .map(({ reviewer }) => reviewer)
-            .reduce((acc, x) => acc + x, 0) / reviewees.length,
-      },
-    })),
+    dash: dash.map(({ reviewings, reviewees, ...rest }) => {
+      const includedReviewings = reviewings
+        .filter(({ id }) => id !== rest.id)
+        .map(({ reviewee }) => reviewee);
+
+      const includedReviewed = reviewees
+        .filter(({ id }) => id !== rest.id)
+        .map(({ reviewer }) => reviewer);
+      return {
+        ...rest,
+        reviewings,
+        reviewees,
+        avg: {
+          reviewing:
+            includedReviewings.reduce((acc, x) => acc + x, 0) /
+            includedReviewings.length,
+          reviewed:
+            includedReviewed.reduce((acc, x) => acc + x, 0) /
+            includedReviewed.length,
+        },
+      };
+    }),
     max: Math.max(
       ...dash.flatMap(({ reviewings }) =>
         reviewings.map(({ reviewee }) => reviewee)
