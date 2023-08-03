@@ -1,35 +1,28 @@
 import { Member } from "../team/members.ts";
 
 type Reviewing = {
-  sum: number;
+  max: number;
   members: (Member & { review: number })[];
 };
 
-export const reviewing = (id: string, { sum: base, members }: Reviewing) => {
+export const reviewing = (id: string, { max: base, members }: Reviewing) => {
   const member = members.find((m) => m.id === id);
   if (!member)
     return members.map(({ id, name }) => ({ id, name, reviewee: 0 }));
 
-  return members.map(({ review, id, name }) => {
+  const max = base + 1;
+
+  return members.map(({ id, name }) => {
     if (id === member.id) return { id, name, reviewee: 0 };
 
-    const sum = base - review;
     const totalWeight = members
       .filter((m) => m.id !== id)
-      .reduce(
-        (acc, { review }) =>
-          acc +
-          (review === 0
-            ? sum * (members.length - 1)
-            : Math.round(sum / review)),
-        0
-      );
+      .reduce((acc, { review }) => acc + Math.round(max - review) ** 2, 0);
 
     if (totalWeight === 0)
       return { id, name, reviewee: Math.round(100 / (members.length - 1)) };
 
-    const weight =
-      member.review === 0 ? sum * (members.length - 1) : sum / member.review;
+    const weight = Math.round(max - member.review) ** 2;
     return {
       id,
       name,

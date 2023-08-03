@@ -18,18 +18,18 @@ export const allReviews = async () => {
       .map((n) => (isNaN(n) ? 0 : n))
       .map((review, i) => ({ ...members[i], review }));
 
-    const baseSum = reviewsByMembers.reduce(
-      (sum, { review }) => sum + review,
+    const max = reviewsByMembers.reduce(
+      (max, { review }) => Math.max(max, review),
       0
     );
 
     return {
-      sum: baseSum,
+      max,
       members: reviewsByMembers,
     };
   } catch (_) {
     return {
-      sum: 0,
+      max: 0,
       members: members.map(({ id, name }) => ({ id, name, review: 0 })),
     };
   }
