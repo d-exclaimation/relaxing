@@ -50,7 +50,21 @@ export const dashboard = async () => {
   }));
 
   return {
-    dash,
+    dash: dash.map(({ reviewings, reviewees, ...rest }) => ({
+      ...rest,
+      reviewings,
+      reviewees,
+      avg: {
+        reviewing:
+          reviewings
+            .map(({ reviewee }) => reviewee)
+            .reduce((acc, x) => acc + x, 0) / reviewings.length,
+        reviewed:
+          reviewees
+            .map(({ reviewer }) => reviewer)
+            .reduce((acc, x) => acc + x, 0) / reviewees.length,
+      },
+    })),
     max: Math.max(
       ...dash.flatMap(({ reviewings }) =>
         reviewings.map(({ reviewee }) => reviewee)
