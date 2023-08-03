@@ -3,7 +3,7 @@
 # relaxing
 
 
-[relaxing](https://relaxing.saturday.team) is an edge powered API or the [relax](https://github.com/d-exclaimation/relax) Slack bot. It is currently in Alpha, and is not yet available for public use.
+[relaxing](https://relaxing.saturday.team) is an edge powered API of the [relax](https://github.com/d-exclaimation/relax) Slack bot. It is currently in Alpha, and is not yet available for public use.
 
 > **Warning**
 >
