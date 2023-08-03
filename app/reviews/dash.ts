@@ -57,10 +57,12 @@ export const dashboard = async () => {
       avg: {
         reviewing:
           reviewings
+            .filter(({ id }) => id !== rest.id)
             .map(({ reviewee }) => reviewee)
             .reduce((acc, x) => acc + x, 0) / reviewings.length,
         reviewed:
           reviewees
+            .filter(({ id }) => id !== rest.id)
             .map(({ reviewer }) => reviewer)
             .reduce((acc, x) => acc + x, 0) / reviewees.length,
       },
