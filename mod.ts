@@ -3,13 +3,16 @@ import { dashboard } from "./app/reviews/dash.ts";
 import "./lib/kv.ts";
 
 Deno.serve(
-  router({
-    "/": () => {
-      return Response.json({ ok: true });
+  router(
+    {
+      "/": () => Response.json({ ok: true }),
+      "/dash": async () => {
+        const data = await dashboard();
+        return Response.json(data);
+      },
     },
-    "/dash": async () => {
-      const data = await dashboard();
-      return Response.json(data);
-    },
-  })
+    {
+      errorHandler: () => Response.json({ ok: false, error: "Not found" }),
+    }
+  )
 );
